@@ -21,6 +21,15 @@ async function run() {
         await client.connect();
         const foodsCollection = client.db("starbelly").collection("foods");
 
+        app.get('/foods', async (req, res) => {
+            const limit = Number(req.query.limit)
+            const pageNumber = Number(req.query.pageNumber)
+            const cursor = foodsCollection.find({}, { _id: 0 }).sort({ "price": 1 });
+            const foods = await cursor.skip(limit * pageNumber).limit(limit).toArray();
+            res.send(foods);
+        });
+
+      
 
     } finally {
 
