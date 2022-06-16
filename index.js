@@ -20,6 +20,7 @@ async function run() {
         await client.connect();
         const foodsCollection = client.db("starbelly").collection("foods");
         const blogsCollection = client.db("starbelly").collection("blogs");
+        const menuCollection = client.db("starbelly").collection("menuList");
 
         app.get('/foods', async (req, res) => {
             const limit = Number(req.query.limit)
@@ -34,6 +35,12 @@ async function run() {
             const cursor = blogsCollection.find(query);
             const blogs = await cursor.toArray();
             res.send(blogs);
+        });
+        app.get('/menuList', async (req, res) => {
+            const query = {};
+            const cursor = menuCollection.find(query);
+            const menu = await cursor.toArray();
+            res.send(menu);
         });
 
         app.get('/priceLowToHigh', async (req, res) => {
